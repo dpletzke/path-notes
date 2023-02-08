@@ -1,18 +1,13 @@
-const MongoClient = require("mongodb").MongoClient;
-const mongoURI =
-  "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2";
+import * as mongodb from "mongodb";
+const env = require("dotenv").config();
 
-const client = new MongoClient(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const client = new mongodb.MongoClient(env.MONGO_URI, {});
 
-client.connect().catch((err) => {
-  if (err) {
+client
+  .connect()
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => {
     console.log("Error connecting to MongoDB");
-  } else {
-    console.log("Connected to MongoDB");
-  }
-});
+  });
 
 module.exports = client;
