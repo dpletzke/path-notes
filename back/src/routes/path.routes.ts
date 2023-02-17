@@ -7,6 +7,8 @@ const plugin: FastifyPluginCallback = async (server, opts, next) => {
     logLevel: "warn",
     method: ["GET"],
     handler: async (request, reply) => {
+      await server.mongo.db.collection("path").
+
       return reply.send({ date: new Date(), works: true });
     },
   });

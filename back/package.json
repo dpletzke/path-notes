@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "jest": "^29.4.3",
+    "nanoid": "^4.0.1",
     "tap": "^16.1.0"
   }
 }
