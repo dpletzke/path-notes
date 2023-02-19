@@ -1,14 +1,9 @@
 import { customAlphabet } from "nanoid";
 
 const numerals = "0123456789";
-const nanoidNumerals = customAlphabet(numerals, 10);
-const makeTenNumericId = () => {
-  return nanoidNumerals();
-};
 
 const alphaNumeric =
   "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
-
 
 const pickElement = (arr: any[]) => {
   return arr[Math.floor(Math.random() * arr.length)];
