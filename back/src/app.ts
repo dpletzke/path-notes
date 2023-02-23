@@ -1,12 +1,12 @@
 import fastify, { FastifyInstance } from "fastify";
-import autoLoad from "@fastify/autoload";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
+// import autoLoad from "@fastify/autoload";
+// import path, { dirname } from "path";
+// import { fileURLToPath } from "url";
 import plugins from "./plugins";
 import routes from "./routes";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
 const server: FastifyInstance = fastify({
   logger: true,
@@ -17,9 +17,9 @@ server.register(plugins.db);
 server.register(routes.dev, { prefix: "/dev" });
 server.register(routes.path, { prefix: "/path" });
 
-server.register(autoLoad, {
-  dir: path.join(__dirname, "routes"),
-});
+// server.register(autoLoad, {
+//   dir: path.join(__dirname, "routes"),
+// });
 
 process.on("uncaughtException", (error) => {
   console.error(error);
