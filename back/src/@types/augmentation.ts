@@ -1,13 +1,28 @@
 // import * as fastify from "fastify";
-// import * as http from "http";
+import * as http from "http";
+import type { Db, MongoClient, MongoClientOptions } from "mongodb";
+import { ObjectId } from "@fastify/mongodb";
+export interface FastifyMongoObject {
+  /**
+   * Mongo client instance
+   */
+  client: MongoClient;
+  /**
+   * DB instance
+   */
+  db?: Db;
+  /**
+   * Mongo ObjectId class
+   */
+  ObjectId: typeof ObjectId;
+}
 
-// declare module "fastify" {
-//   export interface FastifyInstance<
-//     HttpServer = http.Server,
-//     HttpRequest = http.IncomingMessage,
-//     HttpResponse = http.ServerResponse
-//   > {
-//     blipp(): void;
-//     db: Db;
-//   }
-// }
+export interface FastifyMongoNestedObject {
+  [name: string]: FastifyMongoObject;
+}
+
+declare module "fastify" {
+  export interface FastifyInstance {
+    mongo: FastifyMongoObject & FastifyMongoNestedObject;
+  }
+}
