@@ -8,13 +8,7 @@ const plugin: FastifyPluginCallback = async (server, opts, next) => {
   server.register(fastifyMongo, {
     forceClose: true,
     url: env.MONGO_URI,
-  });
-
-  // if the database connection doesn't exist, throw an error
-  server.addHook("onRequest", async (req, reply) => {
-    if (!server.mongo.db) {
-      throw new Error("No database connection");
-    }
+    database: env.MONGO_DB_NAME,
   });
 
   next();
