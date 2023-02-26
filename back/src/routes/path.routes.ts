@@ -1,17 +1,39 @@
-import { FastifyPluginCallback, FastifyRequest } from "fastify";
+import { FastifyPluginCallback } from "fastify";
 import { Path } from "../types";
-type IdRequest = FastifyRequest<{
-  Params: {
-    id: string;
-  };
-}>;
+interface IParams {
+  id: string;
+}
 
 type PathPostBody = Omit<Path, "id">;
 
 export const routes: FastifyPluginCallback = function (server, opts, done) {
-  server.route({
+  server.route<{
+    Params: IParams;
+  }>({
     url: "/",
     method: ["GET"],
+    schema: {
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            data: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  _id: { type: "string" },
+                  name: { type: "string" },
+                  description: { type: "string" },
+                  createdAt: { type: "string" },
+                  updatedAt: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
@@ -21,10 +43,12 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
     },
   });
 
-  server.route({
+  server.route<{
+    Params: IParams;
+  }>({
     url: "/:id",
     method: ["GET"],
-    handler: async (req: IdRequest, reply) => {
+    handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
         .findOne({ _id: req.params.id });
@@ -43,10 +67,12 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
     },
   });
 
-  server.route({
+  server.route<{
+    Params: IParams;
+  }>({
     url: "/:id",
     method: ["PUT"],
-    handler: async (req: IdRequest, reply) => {
+    handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
         .updateOne({ id: req.params.id }, { $set: req.body });
@@ -54,10 +80,12 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
     },
   });
 
-  server.route({
+  server.route<{
+    Params: IParams;
+  }>({
     url: "/:id",
     method: ["DELETE"],
-    handler: async (req: IdRequest, reply) => {
+    handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
         .deleteOne({ id: req.params.id });
