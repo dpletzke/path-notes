@@ -12,6 +12,7 @@ server.register(plugins.db);
 
 server.register(routes.dev, { prefix: "/dev" });
 server.register(routes.path, { prefix: "/path" });
+server.register(routes.user, { prefix: "/user" });
 
 process.on("uncaughtException", (error) => {
   console.error(error);
