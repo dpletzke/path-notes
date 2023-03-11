@@ -1,40 +1,21 @@
+import { Type } from "@sinclair/typebox";
 import { FastifyPluginCallback } from "fastify";
-import { Path } from "../types";
+import { DeleteSchema, Path, PathSchema } from "../schemas";
 interface IParams {
   id: string;
 }
 
-type PathPostBody = Omit<Path, "id">;
-
+const GetAllPathsSchema = {
+  response: {
+    200: Type.Object({ data: Type.Array(PathSchema) }),
+  },
+};
 export const routes: FastifyPluginCallback = function (server, opts, done) {
-  server.route<{
-    Params: IParams;
-  }>({
+  server.route({
     url: "/",
     method: ["GET"],
-    schema: {
-      response: {
-        200: {
-          type: "object",
-          properties: {
-            data: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  _id: { type: "string" },
-                  name: { type: "string" },
-                  description: { type: "string" },
-                  createdAt: { type: "string" },
-                  updatedAt: { type: "string" },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    handler: async (req, reply) => {
+    schema: GetAllPathsSchema,
+    handler: async (_, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
         .find({})
@@ -43,11 +24,17 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
     },
   });
 
+  const GetPathSchema = {
+    response: {
+      200: Type.Object({ data: PathSchema }),
+    },
+  };
   server.route<{
     Params: IParams;
   }>({
     url: "/:id",
     method: ["GET"],
+    schema: GetPathSchema,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
@@ -56,22 +43,34 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
     },
   });
 
+  const PostPathSchema = {
+    response: {
+      200: Type.Object({ data: PathSchema }),
+    },
+  };
   server.route({
     url: "/",
     method: ["POST"],
+    schema: PostPathSchema,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
-        .insertOne(req.body as PathPostBody);
+        .insertOne(req.body as Omit<Path, "_id">);
       return reply.send({ data });
     },
   });
 
+  const EditPathSchema = {
+    response: {
+      200: Type.Object({ data: PathSchema }),
+    },
+  };
   server.route<{
     Params: IParams;
   }>({
     url: "/:id",
     method: ["PUT"],
+    schema: EditPathSchema,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
@@ -85,6 +84,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
   }>({
     url: "/:id",
     method: ["DELETE"],
+    schema: DeleteSchema,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")

@@ -1,19 +1,22 @@
 //write standard fastify crud routes for users with auth
 
-import { FastifyPluginCallback, FastifyRequest } from "fastify";
-import { User } from "../types";
+import { Type } from "@sinclair/typebox";
+import { FastifyPluginCallback } from "fastify";
+import { DeleteSchema, UserSchema } from "../schemas";
 interface IParams {
   id: string;
 }
 
-type UserPostBody = Omit<User, "id">;
-
+const GetAllUsersSchema = {
+  response: {
+    200: Type.Object({ data: Type.Array(UserSchema) }),
+  },
+};
 export const routes: FastifyPluginCallback = function (server, opts, done) {
-  server.route<{
-    Params: IParams;
-  }>({
+  server.route({
     url: "/",
     method: ["GET"],
+    schema: GetAllUsersSchema,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("users")
@@ -23,11 +26,17 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
     },
   });
 
+  const GetUserSchema = {
+    response: {
+      200: Type.Object({ data: UserSchema }),
+    },
+  };
   server.route<{
     Params: IParams;
   }>({
     url: "/:id",
     method: ["GET"],
+    schema: GetUserSchema,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("users")
@@ -36,22 +45,38 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
     },
   });
 
+  const PostUserSchema = {
+    body: Type.Omit(UserSchema, ["_id", "paths", "profilePhoto"]),
+    response: {
+      200: Type.Object({ data: UserSchema }),
+    },
+  };
   server.route({
     url: "/",
     method: ["POST"],
+    schema: PostUserSchema,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("users")
-        .insertOne(req.body as UserPostBody);
+        .insertOne(req.body);
       return reply.send({ data });
     },
   });
 
+  const EditUserSchema = {
+    body: Type.Partial(
+      Type.Pick(UserSchema, ["name", "email", "password", "profilePhoto"])
+    ),
+    response: {
+      200: Type.Object({ data: UserSchema }),
+    },
+  };
   server.route<{
     Params: IParams;
   }>({
     url: "/:id",
     method: ["PUT"],
+    schema: EditUserSchema,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("users")
@@ -65,6 +90,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
   }>({
     url: "/:id",
     method: ["DELETE"],
+    schema: DeleteSchema,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("users")
