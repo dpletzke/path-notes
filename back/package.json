@@ -1,6 +1,6 @@
 {
-  "name": "back",
-  "version": "1.0.0",
+  "name": "path-notes_back",
+  "version": "0.0.1",
   "description": "This project was bootstrapped with Fastify-CLI.",
   "main": "app.ts",
   "directories": {
