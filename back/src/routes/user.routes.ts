@@ -2,14 +2,14 @@
 
 import { Type } from "@sinclair/typebox";
 import { FastifyPluginCallback } from "fastify";
-import { DeleteSchema, UserSchema } from "../schemas";
+import { DeleteSchema, User } from "../schemas";
 interface IParams {
   id: string;
 }
 
 const GetAllUsersSchema = {
   response: {
-    200: Type.Object({ data: Type.Array(UserSchema) }),
+    200: Type.Object({ data: Type.Array(User.Schema) }),
   },
 };
 export const routes: FastifyPluginCallback = function (server, opts, done) {
@@ -28,7 +28,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
 
   const GetUserSchema = {
     response: {
-      200: Type.Object({ data: UserSchema }),
+      200: Type.Object({ data: User.Schema }),
     },
   };
   server.route<{
@@ -46,9 +46,9 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
   });
 
   const PostUserSchema = {
-    body: Type.Omit(UserSchema, ["_id", "paths", "profilePhoto"]),
+    body: Type.Omit(User.Schema, ["_id", "pathIds", "profilePhoto"]),
     response: {
-      200: Type.Object({ data: UserSchema }),
+      200: Type.Object({ data: User.Schema }),
     },
   };
   server.route({
@@ -65,10 +65,10 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
 
   const EditUserSchema = {
     body: Type.Partial(
-      Type.Pick(UserSchema, ["name", "email", "password", "profilePhoto"])
+      Type.Pick(User.Schema, ["name", "email", "password", "profilePhoto"])
     ),
     response: {
-      200: Type.Object({ data: UserSchema }),
+      200: Type.Object({ data: User.Schema }),
     },
   };
   server.route<{
