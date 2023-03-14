@@ -1,5 +1,3 @@
-import { pathService } from "./paths.services.js";
+import auth from "./auth.services";
 
-export {
-  ...pathservice,
-}
+export { auth };
