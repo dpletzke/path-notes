@@ -1,10 +1,7 @@
-const mocker = require("mocker-data-generator").default;
+import mocker from "mocker-data-generator";
 import { ObjectId } from "mongodb";
 const fs = require("fs").promises;
-import {
-  make20AlphaNumericId,
-  makeTenNumericId,
-} from "../helpers/seed-helpers";
+import { make20AlphaNumericId, makeTenNumericId } from "../helpers/seed.helpers";
 require("util");
 
 const account = {
@@ -26,7 +23,7 @@ const device = {
 const zone = {
   _id: {
     function: function () {
-      return { $oid: ObjectId() };
+      return { $oid: new ObjectId() };
     },
   },
   accountId: {
@@ -80,7 +77,7 @@ const user = {
 const zoneDeviceAssignment = {
   _id: {
     function: function () {
-      return { $oid: ObjectId() };
+      return { $oid: new ObjectId() };
     },
   },
   deviceId: {
