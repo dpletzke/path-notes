@@ -1,11 +1,17 @@
 import { Static, Type } from "@sinclair/typebox";
+import { Nullable } from "helpers/schema.helpers";
 
-export const PathSchema = Type.Object({
+const Schema = Type.Object({
   _id: Type.String(),
-  userId: Type.String(),
-  name: Type.String(),
-  description: Type.String(),
-  photos: Type.Array(Type.String()),
+  userId: Type.String({ format: "uuid" }),
+  name: Type.String({ minLength: 1, maxLength: 50 }),
+  description: Nullable(Type.String({ maxLength: 500 })),
+  photos: Type.Array(Type.String({ format: "uri" })),
 });
 
-export type Path = Static<typeof PathSchema>;
+type Type = Static<typeof Schema>;
+
+export default {
+  Schema,
+  Type,
+};

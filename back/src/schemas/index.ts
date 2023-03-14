@@ -1,6 +1,6 @@
-import { Path, PathSchema } from "./path.schemas";
-import { User, UserSchema } from "./user.schemas";
-import { DeleteSchema } from "./util.schemas";
-import AuthSchemas from "./auth.schemas";
+import Path from "./path.schemas";
+import User from "./user.schemas";
+import utilSchemas from "./util.schemas";
+import authSchemas from "./auth.schemas";
 
-export { Path, PathSchema, User, UserSchema, DeleteSchema, AuthSchemas };
+export { Path, User, utilSchemas, authSchemas };

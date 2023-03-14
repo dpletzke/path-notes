@@ -1,6 +1,6 @@
 import { Type } from "@sinclair/typebox";
 
-export const DeleteSchema = {
+const DeleteSchema = {
   response: {
     200: Type.Object({
       acknowledged: Type.Boolean(),
@@ -8,3 +8,5 @@ export const DeleteSchema = {
     }),
   },
 };
+
+export default { DeleteSchema };
