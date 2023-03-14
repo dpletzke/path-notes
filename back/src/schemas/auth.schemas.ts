@@ -1,34 +1,43 @@
-import S from "fluent-json-schema";
+import { Type } from "@sinclair/typebox";
 
-const password = S.string()
-  .minLength(8)
-  .pattern(/\d/)
-  .pattern(/[a-zA-Z]/);
+const password = Type.String({
+  minLength: 8,
+  pattern: "/d/",
+});
 
-const register = S.object()
-  .prop("email", S.string().format(S.FORMATS.EMAIL))
-  .prop("password", password)
-  .prop("name", S.string().required());
-const login = S.object()
-  .prop("email", S.string().format(S.FORMATS.EMAIL))
-  .prop("password", password);
+const register = Type.Object({
+  email: Type.String({ format: "email" }),
+  password,
+  name: Type.String({ required: true }),
+});
 
-const logout = S.object().prop("refreshToken", S.string().required());
+const login = Type.Object({
+  email: Type.String({ format: "email" }),
+  password,
+});
 
-const refreshTokens = S.object().prop("refreshToken", S.string().required());
+const logout = Type.Object({
+  refreshToken: Type.String({ required: true }),
+});
 
-const forgotPassword = S.object().prop(
-  "email",
-  S.string().format(S.FORMATS.EMAIL).required()
-);
+const refreshTokens = Type.Object({
+  refreshToken: Type.String({ required: true }),
+});
 
-const resetPassword = S.object()
-  .prop("token", S.string().required())
-  .prop("password", password);
+const forgotPassword = Type.Object({
+  email: Type.String({ format: "email", required: true }),
+});
 
-const verifyEmail = S.object().prop("token", S.string().required());
+const resetPassword = Type.Object({
+  token: Type.String({ required: true }),
+  password,
+});
 
-module.exports = {
+const verifyEmail = Type.Object({
+  token: Type.String({ required: true }),
+});
+
+export default {
   register,
   login,
   logout,
