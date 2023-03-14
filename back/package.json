@@ -23,7 +23,8 @@
     "@sinclair/typebox": "^0.25.24",
     "fastify": "^4.0.0",
     "fastify-cli": "^5.7.1",
-    "fastify-plugin": "^4.5.0"
+    "fastify-plugin": "^4.5.0",
+    "fluent-json-schema": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^18.14.0",
