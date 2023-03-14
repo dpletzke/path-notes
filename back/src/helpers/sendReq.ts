@@ -1,3 +1,5 @@
+import fetch, { RequestInit } from "node-fetch";
+
 export default async (
   method: "GET" | "POST" | "PUT" | "DELETE",
   { url = "", payload, accessToken = "", params = {} }: any
@@ -6,9 +8,6 @@ export default async (
 
   const config: RequestInit = {
     method, // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
     },
@@ -28,7 +27,7 @@ export default async (
   }
 
   if (accessToken.length > 0) {
-    config.headers.Authorization = "Bearer " + accessToken; // body data type must match "Content-Type" header
+    config.headers["Authorization"] = "Bearer " + accessToken; // body data type must match "Content-Type" header
   }
   const response = await fetch(urlInst.toString(), config);
   return response
