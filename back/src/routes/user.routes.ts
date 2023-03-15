@@ -2,7 +2,7 @@
 
 import { Type } from "@sinclair/typebox";
 import { FastifyPluginCallback } from "fastify";
-import { DeleteSchema, User } from "../schemas";
+import { User, utilSchemas } from "../schemas";
 interface IParams {
   id: string;
 }
@@ -90,7 +90,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
   }>({
     url: "/:id",
     method: ["DELETE"],
-    schema: DeleteSchema,
+    schema: utilSchemas.del,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("users")
