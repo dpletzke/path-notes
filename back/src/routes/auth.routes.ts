@@ -1,7 +1,7 @@
 //write standard fastify crud routes for users with auth
 
-import { Type } from "@sinclair/typebox";
 import { FastifyPluginCallback } from "fastify";
+import { Type } from "@sinclair/typebox";
 import { authSchemas, User } from "../schemas";
 
 export const routes: FastifyPluginCallback = function (server, opts, done) {

@@ -1,3 +1,4 @@
-import db from "./db";
+import db from "./db.plugins";
+import auth from "./auth.plugins";
 
-export default { db };
+export default { auth, db };
