@@ -2,7 +2,7 @@ import { Static, Type } from "@sinclair/typebox";
 import { AsLiteralArray, Nullable } from "../helpers/schema.helpers";
 import { roles } from "../config/roles";
 
-const Schema = Type.Object({
+export const UserSchema = Type.Object({
   _id: Type.String({ format: "uuid" }),
   role: AsLiteralArray(roles),
   name: Type.String({ maxLength: 50 }),
@@ -16,9 +16,4 @@ const Schema = Type.Object({
   pathIds: Type.Array(Type.String({ format: "uuid" })),
 });
 
-type Type = Static<typeof Schema>;
-
-export default {
-  Schema,
-  Type,
-};
+export type User = Static<typeof UserSchema>;

@@ -1,15 +1,14 @@
-//write standard fastify crud routes for users with auth
-
-import { Type } from "@sinclair/typebox";
 import { FastifyPluginCallback } from "fastify";
-import { User, utilSchemas } from "../schemas";
+import fp from "fastify-plugin";
+import { Type } from "@sinclair/typebox";
+import { User, UserSchema, utilSchemas } from "../schemas";
 interface IParams {
   id: string;
 }
 
 const GetAllUsersSchema = {
   response: {
-    200: Type.Object({ data: Type.Array(User.Schema) }),
+    200: Type.Object({ data: Type.Array(UserSchema) }),
   },
 };
 export const routes: FastifyPluginCallback = function (server, opts, done) {
@@ -28,7 +27,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
 
   const GetUserSchema = {
     response: {
-      200: Type.Object({ data: User.Schema }),
+      200: Type.Object({ data: UserSchema }),
     },
   };
   server.route<{
@@ -46,9 +45,9 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
   });
 
   const PostUserSchema = {
-    body: Type.Omit(User.Schema, ["_id", "pathIds", "profilePhoto"]),
+    body: Type.Omit(UserSchema, ["_id", "pathIds", "profilePhoto"]),
     response: {
-      200: Type.Object({ data: User.Schema }),
+      200: Type.Object({ data: UserSchema }),
     },
   };
   server.route({
@@ -65,10 +64,10 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
 
   const EditUserSchema = {
     body: Type.Partial(
-      Type.Pick(User.Schema, ["name", "email", "password", "profilePhoto"])
+      Type.Pick(UserSchema, ["name", "email", "password", "profilePhoto"])
     ),
     response: {
-      200: Type.Object({ data: User.Schema }),
+      200: Type.Object({ data: UserSchema }),
     },
   };
   server.route<{
@@ -102,4 +101,4 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
   done();
 };
 
-export default routes;
+export default fp(routes);

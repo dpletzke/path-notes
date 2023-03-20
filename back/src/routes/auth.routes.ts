@@ -2,7 +2,7 @@
 
 import { FastifyPluginCallback } from "fastify";
 import { Type } from "@sinclair/typebox";
-import { authSchemas, User } from "../schemas";
+import { authSchemas, UserSchema } from "../schemas";
 
 export const routes: FastifyPluginCallback = function (server, opts, done) {
   const Login = {
@@ -10,7 +10,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
       body: authSchemas.login,
       response: {
         200: Type.Object({
-          data: User.Schema,
+          data: UserSchema,
         }),
       },
     },
@@ -25,7 +25,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
       body: authSchemas.register,
       response: {
         200: Type.Object({
-          data: User.Schema,
+          data: UserSchema,
         }),
       },
     },
@@ -40,7 +40,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
       body: authSchemas.logout,
       response: {
         200: Type.Object({
-          data: User.Schema,
+          data: UserSchema,
         }),
       },
     },
@@ -55,7 +55,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
       body: authSchemas.refreshTokens,
       response: {
         200: Type.Object({
-          data: User.Schema,
+          data: UserSchema,
         }),
       },
     },
@@ -70,7 +70,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
       body: authSchemas.forgotPassword,
       response: {
         200: Type.Object({
-          data: User.Schema,
+          data: UserSchema,
         }),
       },
     },
@@ -85,7 +85,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
       body: authSchemas.resetPassword,
       response: {
         200: Type.Object({
-          data: User.Schema,
+          data: UserSchema,
         }),
       },
     },
@@ -100,7 +100,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
       body: authSchemas.verifyEmail,
       response: {
         200: Type.Object({
-          data: User.Schema,
+          data: UserSchema,
         }),
       },
     },

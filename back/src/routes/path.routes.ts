@@ -1,6 +1,7 @@
-import { Type } from "@sinclair/typebox";
 import { FastifyPluginCallback } from "fastify";
-import { DeleteSchema, Path, PathSchema } from "../schemas";
+import fp from "fastify-plugin";
+import { Type } from "@sinclair/typebox";
+import { utilSchemas, PathSchema, Path } from "../schemas";
 interface IParams {
   id: string;
 }
@@ -15,6 +16,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
     url: "/",
     method: ["GET"],
     schema: GetAllPathsSchema,
+    onRequest: server.auth([]),
     handler: async (_, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
@@ -44,10 +46,12 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
   });
 
   const PostPathSchema = {
+    body: Type.Omit(PathSchema, ["_id"]),
     response: {
       200: Type.Object({ data: PathSchema }),
     },
   };
+
   server.route({
     url: "/",
     method: ["POST"],
@@ -55,12 +59,13 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
-        .insertOne(req.body as Omit<Path, "_id">);
+        .insertOne(req.body);
       return reply.send({ data });
     },
   });
 
   const EditPathSchema = {
+    body: Type.Omit(PathSchema, ["_id"]),
     response: {
       200: Type.Object({ data: PathSchema }),
     },
@@ -84,7 +89,7 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
   }>({
     url: "/:id",
     method: ["DELETE"],
-    schema: DeleteSchema,
+    schema: utilSchemas.del,
     handler: async (req, reply) => {
       const data = await server.mongo
         .db!.collection("paths")
@@ -96,4 +101,4 @@ export const routes: FastifyPluginCallback = function (server, opts, done) {
   done();
 };
 
-export default routes;
+export default fp(routes);

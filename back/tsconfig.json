@@ -13,7 +13,8 @@
     "target": "es2016",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "declaration": true,
   },
   "include": [
     "./src/**/*.ts"
