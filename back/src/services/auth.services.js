@@ -3,11 +3,7 @@ import {
   FastifyRequestType,
 } from "fastify/types/type-provider";
 
-function verifyJWTandDB(
-  request: FastifyRequestType,
-  reply: FastifyReplyType,
-  done
-) {
+function verifyJWTandDB(request, reply, done) {
   const jwt = this.jwt;
   const level = this.level.authdb;
 
