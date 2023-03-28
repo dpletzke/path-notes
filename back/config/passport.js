@@ -1,19 +1,19 @@
-const { Strategy, ExtractJwt } = require("passport-jwt");
+const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
+const config = require("./config");
+const { tokenTypes } = require("./tokens");
+const { User } = require("../models");
 
 const jwtOptions = {
-  secretOrKey: "secret",
+  secretOrKey: 'secret',
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 };
 
 const jwtVerify = async (payload, done) => {
   try {
-    console.log("fake user lookup");
-    const user = await new Promise(() => {
-      if (payload.sub === 1) {
-        return Promise.resolve({ id: 1, name: "John Doe" });
-      }
-      return Promise.resolve(null);
-    });
+    if (payload.type !== tokenTypes.ACCESS) {
+      throw new Error("Invalid token type");
+    }
+    const user = await User.findById(payload.sub);
     if (!user) {
       return done(null, false);
     }
@@ -23,7 +23,7 @@ const jwtVerify = async (payload, done) => {
   }
 };
 
-const jwtStrategy = new Strategy(jwtOptions, jwtVerify);
+const jwtStrategy = new JwtStrategy(jwtOptions, jwtVerify);
 
 module.exports = {
   jwtStrategy,

@@ -24,13 +24,19 @@
     "@fastify/passport": "^2.2.0",
     "@fastify/secure-session": "^6.0.0",
     "@fastify/sensible": "^5.0.0",
+    "bcryptjs": "^2.4.3",
     "fastify": "^4.15.0",
     "fastify-cli": "^5.7.1",
+    "fastify-mongoose-driver": "^3.2.0",
     "fastify-plugin": "^4.0.0",
     "fluent-json-schema": "^4.1.0",
-    "passport-jwt": "^4.0.1"
+    "joi": "^17.9.1",
+    "mongoose": "^7.0.3",
+    "passport-jwt": "^4.0.1",
+    "validator": "^13.9.0"
   },
   "devDependencies": {
+    "eslint": "^8.36.0",
     "tap": "^16.1.0"
   }
 }

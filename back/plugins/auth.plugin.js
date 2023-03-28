@@ -9,18 +9,18 @@ const { roleRights } = require("../config/roles");
 const verifyCallback =
   (resolve, reject, requiredRights) =>
   async (request, reply, err, user, info, statuses) => {
-    console.log("3");
+    console.log("3", { request, reply, err, user, info, statuses });
     if (err || info || !user) {
       return reject(new Error("Please authenticate"));
     }
-    req.user = user;
+    request.user = user;
 
     if (requiredRights.length) {
       const userRights = roleRights.get(user.role);
       const hasRequiredRights = requiredRights.every((requiredRight) =>
         userRights.includes(requiredRight)
       );
-      if (!hasRequiredRights && req.params.userId !== user.id) {
+      if (!hasRequiredRights && request.params.userId !== user.id) {
         return reject(new Error("Forbidden"));
       }
     }
@@ -31,7 +31,7 @@ const verifyCallback =
 const auth =
   (...requiredRights) =>
   async (request, reply, next) => {
-    console.log("1");
+    console.log("1", request.body);
     return new Promise((resolve, reject) => {
       console.log("2");
       return passport.authenticate(
