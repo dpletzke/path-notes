@@ -1,58 +1,34 @@
 "use strict";
-
-const passport = require("@fastify/passport");
+const { User } = require("../../models");
+const { userPostSchema } = require("../../schemas/users.schemas");
 
 module.exports = async function (fastify, opts) {
-  // fastify.get(
-  //   "/user",
-  //   {
-  //     preValidation: [fastify.auth()],
-  //   },
-  //   async function (request, reply) {
-  //     const users = await fastify.mongo.db
-  //       .collection("users")
-  //       .find({})
-  //       .toArray();
-  //     return { data: users };
-  //   }
-  // );
-
   fastify.get(
     "/user",
     {
-      preValidation: [
-        passport.authenticate(
-          "jwt",
-          { authInfo: false },
-          async (request, reply, err, user, info, status) => {
-            console.log({ err, user, info, status });
-            if (err || info || !user) {
-              return Promise.reject(new Error("Please authenticate"));
-            }
-          }
-        ),
-      ],
+      preValidation: [fastify.auth("getUsers")],
     },
     async function (request, reply) {
-      const users = await fastify.mongo.db
-        .collection("users")
-        .find({})
-        .toArray();
-      return { data: users };
+      const users = await User.find({});
+      return reply.send({ data: users });
     }
   );
 
-  fastify.post("/user", async function (request, reply) {
-    const user = await fastify.mongo.db
-      .collection("users")
-      .insertOne(request.body);
-    return { data: user };
-  });
+  fastify.post(
+    "/user",
+    {
+      preValidation: [fastify.auth("manageUsers")],
+      schema: userPostSchema,
+    },
+    async function (request, reply) {
+      const user = await User.create(request.body);
+      return { data: user };
+    }
+  );
 
   fastify.get("/user/:id", async function (request, reply) {
-    const user = await fastify.mongo.db
-      .collection("users")
-      .findOne({ _id: new fastify.mongo.ObjectId(request.params.id) });
+    console.log(request.params.id);
+    const user = await User.findById(request.params.id);
     return { data: user };
   });
 

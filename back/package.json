@@ -27,10 +27,11 @@
     "bcryptjs": "^2.4.3",
     "fastify": "^4.15.0",
     "fastify-cli": "^5.7.1",
-    "fastify-mongoose-driver": "^3.2.0",
     "fastify-plugin": "^4.0.0",
     "fluent-json-schema": "^4.1.0",
+    "http-status": "^1.6.2",
     "joi": "^17.9.1",
+    "moment": "^2.29.4",
     "mongoose": "^7.0.3",
     "passport-jwt": "^4.0.1",
     "validator": "^13.9.0"
