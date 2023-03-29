@@ -14,7 +14,6 @@ const userSchemaArray = S.array().items(userSchema);
 
 const userPostSchema = S.object()
   .id("userPost")
-  .prop("role", S.string().required())
   .prop("name", S.string().required())
   .prop("email", S.string().required())
   .prop("password", S.string().required());
@@ -26,7 +25,15 @@ const userPutSchema = S.object()
   .prop("email", S.string().required())
   .prop("password", S.string().required());
 
+const userLoginSchema = S.object()
+  .id("userLogin")
+  .prop("email", S.string().required())
+  .prop("password", S.string().required());
+
 module.exports = {
   userSchema,
   userSchemaArray,
+  userPostSchema,
+  userPutSchema,
+  userLoginSchema,
 };

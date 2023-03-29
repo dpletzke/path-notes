@@ -1,17 +1,21 @@
 const fp = require("fastify-plugin");
 const fs = require("fs");
 const path = require("path");
+const httpStatus = require("http-status");
 const passport = require("@fastify/passport");
 const fastifySecureSession = require("@fastify/secure-session");
 const { jwtStrategy } = require("../config/passport");
 const { roleRights } = require("../config/roles");
+const ApiError = require("../utils/ApiError");
 
 const verifyCallback =
   (resolve, reject, requiredRights) =>
   async (request, reply, err, user, info, statuses) => {
     console.log("3", { request, reply, err, user, info, statuses });
     if (err || info || !user) {
-      return reject(new Error("Please authenticate"));
+      return reject(
+        new ApiError(httpStatus.UNAUTHORIZED, "Please authenticate")
+      );
     }
     request.user = user;
 
@@ -21,7 +25,7 @@ const verifyCallback =
         userRights.includes(requiredRight)
       );
       if (!hasRequiredRights && request.params.userId !== user.id) {
-        return reject(new Error("Forbidden"));
+        return reject(new ApiError(httpStatus.FORBIDDEN, "Forbidden"));
       }
     }
 
@@ -31,18 +35,15 @@ const verifyCallback =
 const auth =
   (...requiredRights) =>
   async (request, reply, next) => {
-    console.log("1", request.body);
     return new Promise((resolve, reject) => {
-      console.log("2");
       return passport.authenticate(
         "jwt",
-        { session: false },
+        { session: false, failWithError: true },
         verifyCallback(resolve, reject, requiredRights)
-      );
+      )(request, reply, next);
     })
       .then(() => next())
       .catch((err) => {
-        console.log("2.5:::::::", err);
         next(err);
       });
   };

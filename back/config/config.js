@@ -1,8 +1,8 @@
-// const dotenv = require("dotenv");
-// const path = require("path");
+const dotenv = require("dotenv");
+const path = require("path");
 // const Joi = require("joi");
 
-// dotenv.config({ path: path.join(__dirname, "../../.env") });
+dotenv.config({ path: path.join(__dirname, "../../.env") });
 
 // const envVarsSchema = Joi.object()
 //   .keys({
@@ -42,34 +42,37 @@
 //   throw new Error(`Config validation error: ${error.message}`);
 // }
 
-// module.exports = {
-//   env: envVars.NODE_ENV,
-//   port: envVars.PORT,
-//   mongoose: {
-//     url: envVars.MONGODB_URL + (envVars.NODE_ENV === "test" ? "-test" : ""),
-//     options: {
-//       useCreateIndex: true,
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     },
-//   },
-//   jwt: {
-//     secret: envVars.JWT_SECRET,
-//     accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
-//     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
-//     resetPasswordExpirationMinutes:
-//       envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
-//     verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
-//   },
-//   email: {
-//     smtp: {
-//       host: envVars.SMTP_HOST,
-//       port: envVars.SMTP_PORT,
-//       auth: {
-//         user: envVars.SMTP_USERNAME,
-//         pass: envVars.SMTP_PASSWORD,
-//       },
-//     },
-//     from: envVars.EMAIL_FROM,
-//   },
-// };
+module.exports = {
+  env: process.env.NODE_ENV,
+  port: process.env.PORT,
+  mongoose: {
+    url:
+      process.env.MONGODB_URL +
+      (process.env.NODE_ENV === "test" ? "-test" : ""),
+    options: {
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    },
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    accessExpirationMinutes: process.env.JWT_ACCESS_EXPIRATION_MINUTES,
+    refreshExpirationDays: process.env.JWT_REFRESH_EXPIRATION_DAYS,
+    resetPasswordExpirationMinutes:
+      process.env.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
+    verifyEmailExpirationMinutes:
+      process.env.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
+  },
+  email: {
+    smtp: {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      auth: {
+        user: process.env.SMTP_USERNAME,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    },
+    from: process.env.EMAIL_FROM,
+  },
+};
