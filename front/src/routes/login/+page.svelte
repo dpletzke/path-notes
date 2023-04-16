@@ -1,19 +1,16 @@
 <script lang="ts">
 	import { useForm, validators, HintGroup, Hint, email, required } from 'svelte-use-form';
-	import { accessToken } from '../../stores';
+	import { accessToken, user } from '../../stores';
 	import { sendReq } from '../../utils/sendReq';
-	import { isSuccess } from '../../types';
+	import { isSuccess, type User } from '../../types';
+	import { goto } from '$app/navigation';
 
 	const form = useForm();
 
 	let responseError = '';
 
 	type SuccessResponse = {
-		user: {
-			id: string;
-			email: string;
-			role: string;
-		};
+		user: User;
 		tokens: {
 			access: {
 				token: string;
@@ -38,6 +35,8 @@
 
 		if (isSuccess<SuccessResponse>(response)) {
 			accessToken.set(response.body.tokens.access.token);
+			user.set(response.body.user);
+			goto('/home');
 		} else {
 			responseError = response.body.message;
 		}

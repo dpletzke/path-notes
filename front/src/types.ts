@@ -1,6 +1,7 @@
 import { isBetween } from './utils/num';
 
 export type Path = {
+	id: string;
 	name: string;
 	description: string;
 	userId: string;

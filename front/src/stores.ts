@@ -10,6 +10,9 @@ accessToken.subscribe((value) => {
 	if (browser && value !== null) {
 		window.sessionStorage.setItem('accessToken', value);
 	}
+	if (browser && value === null) {
+		window.sessionStorage.removeItem('accessToken');
+	}
 });
 
 export const user = writable<null | User>(null);
