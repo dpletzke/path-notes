@@ -15,8 +15,7 @@ module.exports = async function (fastify, opts) {
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, "routes"),
     dirNameRoutePrefix: (dirName) => {
-      console.log(dirName);
-      // dirName.replace(/v1/, "");
+      dirName.replace(/v1/, "");
     },
     options: Object.assign({}, opts),
   });

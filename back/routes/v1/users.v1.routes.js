@@ -27,7 +27,6 @@ module.exports = async function (fastify, opts) {
   );
 
   fastify.get("/user/:id", async function (request, reply) {
-    console.log(request.params.id);
     const user = await User.findById(request.params.id);
     return { data: user };
   });
